@@ -5,8 +5,7 @@ Purpose
 The purpose of this project is to clean and prepare the housing data for further analysis using SQL Server. The data cleaning process involves handling missing values, standardizing formats, removing duplicates, and addressing any inconsistencies or errors in the dataset.
 
 Files
-data.sql: SQL script containing the commands for cleaning the housing data.
-data_cleaned.csv: The cleaned housing data file in CSV format.
+CleaningHousingDatawithSQL.sql: SQL script containing the commands for cleaning the housing data.
 Data Cleaning Process
 The following steps were performed to clean the housing data:
 
