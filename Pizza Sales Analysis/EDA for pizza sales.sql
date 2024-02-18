@@ -44,6 +44,20 @@ FROM dbo.pizza_sales
 GROUP BY DATEPART(HOUR,order_time)
 ORDER BY total_orders DESC
 
+-- Calculating hourly trend for total pizza sold
+
+SELECT DATEPART(HOUR,order_time) AS order_hours, SUM(quantity) AS total_pizzas_sold
+FROM dbo.pizza_sales
+GROUP BY DATEPART(HOUR,order_time)
+ORDER BY DATEPART(HOUR,order_time)
+
+-- Calculating weekly trend for total orders
+
+SELECT DATEPART(ISO_WEEK,order_date) AS week_number,YEAR(order_date) AS order_year, COUNT(DISTINCT order_id) AS total_orders
+FROM dbo.pizza_sales
+GROUP BY DATEPART(ISO_WEEK,order_date),YEAR(order_date)
+ORDER BY DATEPART(ISO_WEEK,order_date),YEAR(order_date)
+
 -- Calculating total sales and percentage of sales by pizza category
 
 SELECT pizza_category,ROUND(SUM(total_price),2) AS total_sales, ROUND(SUM(total_price)*100/(SELECT SUM(total_price) FROM dbo.pizza_sales),2) AS sales_percentage
@@ -106,6 +120,20 @@ FROM dbo.pizza_sales
 GROUP BY pizza_name
 ORDER BY total_pizza_sold DESC
 
+-- Showing bottom 5 worst sellers by total revenue
+
+SELECT TOP 5 pizza_name, ROUND(SUM(total_price),2) AS total_revenue
+FROM dbo.pizza_sales
+GROUP BY pizza_name
+ORDER BY total_revenue 
+
+-- Showing top 5 Best sellers by total revenue
+
+SELECT TOP 5 pizza_name, SUM(total_price) AS total_revenue
+FROM dbo.pizza_sales
+GROUP BY pizza_name
+ORDER BY total_revenue DESC
+
 -- Showing top 5 best sellers by total pizzas sold for month january
 
 SELECT TOP 5 pizza_name, SUM(quantity) AS total_pizza_sold
@@ -144,3 +172,17 @@ FROM dbo.pizza_sales
 WHERE DATEPART(QUARTER,order_date)=1
 GROUP BY pizza_name
 ORDER BY total_pizza_sold 
+
+-- Showing bottom 5 worst sellers by total orders
+
+SELECT TOP 5 pizza_name, COUNT(DISTINCT order_id) AS total_orders
+FROM dbo.pizza_sales
+GROUP BY pizza_name
+ORDER BY total_orders 
+
+-- Showing top 5 Best sellers by total orders
+
+SELECT TOP 5 pizza_name, COUNT(DISTINCT order_id) AS total_orders
+FROM dbo.pizza_sales
+GROUP BY pizza_name
+ORDER BY total_orders DESC
